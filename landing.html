@@ -7,24 +7,63 @@
     <title>Website Name</title>
     <link type="text/css" rel="stylesheet" href="/styles/landing.css" />
 </head>
+</head>
 <body>
     <div class="container">
-        <h1>UNOTE</h1>
+        <h1>Website Name</h1>
         <div class="buttons">
-            <button onclick="joinSession()">JOIN SESSION</button>
-            <button onclick="createSession()">CREATE SESSION</button>
+            <button onclick="showJoinSession()">JOIN SESSION</button>
+            <button onclick="showCreateSession()">CREATE SESSION</button>
+        </div>
+        <div class="join-session">
+            <input type="text" id="joinSessionId" placeholder="Enter Session ID">
+            <input type="text" id="joinSessionName" placeholder="Enter Session Name">
+            <button onclick="enterJoinSession()">ENTER</button>
+        </div>
+        <div class="create-session">
+            <span id="generatedSessionId"></span>
+            <input type="text" id="userName" placeholder="Enter Your Name">
+            <button onclick="enterCreateSession()">ENTER</button>
         </div>
     </div>
 
     <script>
-        function joinSession() {
-            alert('Join Session button clicked');
-            // Add your join session logic here
+        function showJoinSession() {
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.join-session').style.display = 'flex';
         }
 
-        function createSession() {
-            alert('Create Session button clicked');
-            // Add your create session logic here
+        function showCreateSession() {
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.create-session').style.display = 'flex';
+            const sessionId = generateSessionId();
+            document.getElementById('generatedSessionId').innerText = `Session ID: ${sessionId}`;
+        }
+
+        function generateSessionId() {
+            return Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        }
+
+        function enterJoinSession() {
+            const sessionId = document.getElementById('joinSessionId').value;
+            const sessionName = document.getElementById('joinSessionName').value;
+            if(sessionId && sessionName) {
+                alert(`Joining Session\nSession ID: ${sessionId}\nSession Name: ${sessionName}`);
+                // Add your join session logic here
+            } else {
+                alert('Please enter both Session ID and Session Name');
+            }
+        }
+
+        function enterCreateSession() {
+            const sessionId = document.getElementById('generatedSessionId').innerText.split(': ')[1];
+            const userName = document.getElementById('userName').value;
+            if(userName) {
+                alert(`Session Created\nSession ID: ${sessionId}\nYour Name: ${userName}`);
+                // Add your create session logic here
+            } else {
+                alert('Please enter your name');
+            }
         }
     </script>
 </body>
