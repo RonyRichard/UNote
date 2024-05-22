@@ -26,7 +26,6 @@
             <button onclick="enterCreateSession()">ENTER</button>
         </div>
     </div>
-
     <script>
         function showJoinSession() {
             document.querySelector('.buttons').style.display = 'none';
@@ -48,7 +47,7 @@
             const sessionId = document.getElementById('joinSessionId').value;
             const sessionName = document.getElementById('joinSessionName').value;
             if(sessionId && sessionName) {
-                alert(`Joining Session\nSession ID: ${sessionId}\nSession Name: ${sessionName}`);
+                window.location.href = `main.html?sessionId=${sessionId}&sessionName=${sessionName}`;
                 // Add your join session logic here
             } else {
                 alert('Please enter both Session ID and Session Name');
@@ -59,7 +58,7 @@
             const sessionId = document.getElementById('generatedSessionId').innerText.split(': ')[1];
             const userName = document.getElementById('userName').value;
             if(userName) {
-                alert(`Session Created\nSession ID: ${sessionId}\nYour Name: ${userName}`);
+                window.location.href = `main.html?sessionId=${sessionId}&userName=${userName}`;
                 // Add your create session logic here
             } else {
                 alert('Please enter your name');
@@ -67,4 +66,7 @@
         }
     </script>
 </body>
+<footer>
+    <a href="/aboutus.html">About Us</a>
+</footer>
 </html>
