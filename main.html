@@ -2,42 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNOTE</title>
-    <link type="text/css" rel="stylesheet" href="/UNOTE/styles/main.css" />
+    <title>Collaborative Document</title>
+    <link type="text/css" rel="stylesheet" href="/styles/main.css" />
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <img src="image.png" alt="Logo image" />
-        <nav>
-            <a href="main.html">Home</a>
-        </nav>
-    </header>
-    <main>
-        <h1>CREATE TOGETHER, LEARN TOGETHER</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-        <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-        <p>exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure</p>
-        <p>dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    </main>
-    <footer>
-        <div class="footerone">
-            <a href="contact.html">Contact</a>
+    <div class="container">
+        <h1>Collaborative Document</h1>
+        <div class="session-info">
+            <span id="sessionIdDisplay">Session ID: </span>
         </div>
-        <div class="footertwo">
-            <a href="githublink">Github</a>
-        </div>
-        <div class="footerthree">
-            <a href="termsandservicelink">Terms and Service</a>
-        </div>
-        <div class="footerfour">
-            <a href="youtubelink">Youtube</a>
-        </div>
-        <div class="footerfive">
-            <a href="authors.html">Authors</a>
-        </div>
-    </footer>
+        <div id="editor-container"></div>
+        <button id="endSessionButton">End Session</button>
+    </div>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Extract sessionId and userName from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('sessionId');
+        const userName = urlParams.get('userName') || urlParams.get('sessionName');
+
+        // Display the session ID
+        document.getElementById('sessionIdDisplay').innerText += sessionId;
+
+        // Initialize Quill editor
+        const quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'font': [] }, { 'size': [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'header': 1 }, { 'header': 2 }, 'blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Placeholder for WebSocket connection
+        let socket;
+
+        function setupWebSocket() {
+            // Connect to the WebSocket server (replace 'wss://your-websocket-server' with your server URL)
+            socket = new WebSocket('wss://your-websocket-server');
+
+            socket.onopen = function() {
+                console.log('WebSocket connection established');
+                // Send session join message
+                socket.send(JSON.stringify({ type: 'join', sessionId: sessionId, userName: userName }));
+            };
+
+            socket.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                if (message.type === 'update') {
+                    quill.setContents(message.content);
+                }
+            };
+
+            socket.onclose = function() {
+                console.log('WebSocket connection closed');
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket error: ', error);
+            };
+        }
+
+        // Set up WebSocket connection
+        setupWebSocket();
+
+        // Handle document edits
+        quill.on('text-change', function(delta, oldDelta, source) {
+            if (source === 'user') {
+                const content = quill.getContents();
+                // Send content update to the WebSocket server
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ type: 'update', sessionId: sessionId, content: content }));
+                }
+            }
+        });
+
+        // Handle end session button click
+        document.getElementById('endSessionButton').addEventListener('click', function() {
+            const content = quill.getContents();
+            // Save the content to the server
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sessionId: sessionId,
+                    content: content
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Session saved successfully!');
+                    window.location.href = '/landing.html';
+                } else {
+                    alert('Error saving session.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving session.');
+            });
+        });
+    </script>
 </body>
 </html>
