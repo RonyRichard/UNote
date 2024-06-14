@@ -36,15 +36,6 @@ let spacingButtons = document.querySelectorAll(".spacing");
 let formatButtons = document.querySelectorAll(".format");
 let scriptButtons = document.querySelectorAll(".script");
 
-//List of fontlist
-let fontList = [
-  "Arial",
-  "Verdana",
-  "Times New Roman",
-  "Garamond",
-  "Georgia",
-  "Courier New",
-];
 
 //Initial Settings
 const initializer = () => {
@@ -82,11 +73,24 @@ advancedOptionButton.forEach((button) => {
 
 linkButton.addEventListener("click", () => {
   let userLink = prompt("Enter a URL");
-  if (/http/i.test(userLink)) {
-    modifyText(linkButton.id, false, userLink);
-  } else {
-    userLink = "http://" + userLink;
-    modifyText(linkButton.id, false, userLink);
+  if (userLink) {
+    if (!/http/i.test(userLink)) {
+      userLink = "http://" + userLink;
+    }
+    document.execCommand("createLink", false, userLink);
+    
+    // Add class to the created hyperlink
+    const selection = window.getSelection();
+    if (selection.rangeCount) {
+      let element = selection.anchorNode;
+      while (element && element.nodeType !== 1) {
+        element = element.parentNode;
+      }
+      if (element && element.tagName === "A") {
+        element.id = "hyperlink";
+        element.classList.add("custom-hyperlink");
+      }
+    }
   }
 });
 

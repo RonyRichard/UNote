@@ -1,126 +1,158 @@
-<!--
-    See Landing wireframe for feature list and structure
--->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>uNote</title>
-    <!-- FontAwesome Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    />
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles/styles.css" />
-  </head>
-  <header class="Icon">
-    <nav>
-      <a href="index.html"><h1>uNote</h1></a>
-    </nav>
-  </header>
-  
-  <body>
-    <div class="container">
-      <div class="options">
-        <!-- Text Format -->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>uNote</title>
+        <link rel="stylesheet" href="styles/test.css">
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        >
+        <link rel="icon" href="U-Note-Logo.png" type="image/png">
+    </head>
+    <body>
+        <header class="Icon">
+            <button id="toggle-button">&#9776;</button>
+            <nav> <!-- Everything in this Nav Fades Away -->
+                <h2>Session ID: <span id="session-id"></span></h2>
+                <a href="index.html"><h1>uNote</h1></a>
+                <button id="uploadBtn">Upload</button>
+                <button id="saveBtn">Save As</button>
+              </nav>
+              
+        </header>
+        <div id="options-bar">
+            <!-- Text Format -->
         <button id="bold" class="option-button format">
-          <i class="fa-solid fa-bold"></i>
-        </button>
-        <button id="italic" class="option-button format">
-          <i class="fa-solid fa-italic"></i>
-        </button>
-        <button id="underline" class="option-button format">
-          <i class="fa-solid fa-underline"></i>
-        </button>
-        <button id="strikethrough" class="option-button format">
-          <i class="fa-solid fa-strikethrough"></i>
-        </button>
-        <button id="superscript" class="option-button script">
-          <i class="fa-solid fa-superscript"></i>
-        </button>
-        <button id="subscript" class="option-button script">
-          <i class="fa-solid fa-subscript"></i>
-        </button>
+            <i class="fa-solid fa-bold"></i>
+          </button>
+          <button id="italic" class="option-button format">
+            <i class="fa-solid fa-italic"></i>
+          </button>
+          <button id="underline" class="option-button format">
+            <i class="fa-solid fa-underline"></i>
+          </button>
+          <button id="strikethrough" class="option-button format">
+            <i class="fa-solid fa-strikethrough"></i>
+          </button>
+          <button id="superscript" class="option-button script">
+            <i class="fa-solid fa-superscript"></i>
+          </button>
+          <button id="subscript" class="option-button script">
+            <i class="fa-solid fa-subscript"></i>
+          </button>
+  
+          <!-- List -->
+          <button id="insertOrderedList" class="option-button">
+            <div class="fa-solid fa-list-ol"></div>
+          </button>
+          <button id="insertUnorderedList" class="option-button">
+            <i class="fa-solid fa-list"></i>
+          </button>
+  
+          <!-- Undo/Redo -->
+          <button id="undo" class="option-button">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+          <button id="redo" class="option-button">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+  
+          <!-- Link -->
+          <button id="createLink" class="adv-option-button">
+            <i class="fa fa-link"></i>
+          </button>
+          <button id="unlink" class="option-button">
+            <i class="fa fa-unlink"></i>
+          </button>
+  
+          <!-- Alignment -->
+          <button id="justifyLeft" class="option-button align">
+            <i class="fa-solid fa-align-left"></i>
+          </button>
+          <button id="justifyCenter" class="option-button align">
+            <i class="fa-solid fa-align-center"></i>
+          </button>
+          <button id="justifyRight" class="option-button align">
+            <i class="fa-solid fa-align-right"></i>
+          </button>
+          <button id="justifyFull" class="option-button align">
+            <i class="fa-solid fa-align-justify"></i>
+          </button>
+          <button id="indent" class="option-button spacing">
+            <i class="fa-solid fa-indent"></i>
+          </button>
+          <button id="outdent" class="option-button spacing">
+            <i class="fa-solid fa-outdent"></i>
+          </button>
 
-        <!-- List -->
-        <button id="insertOrderedList" class="option-button">
-          <div class="fa-solid fa-list-ol"></div>
-        </button>
-        <button id="insertUnorderedList" class="option-button">
-          <i class="fa-solid fa-list"></i>
-        </button>
+          <!-- Heading/Presets -->
+          <select id="formatBlock" class="adv-option-button">
+            <option value="H3">Body</option>
+            <option value="H4">Title</option>
+            <option value="H5">Subtitle</option>            
+          </select>
+  
+          <!-- Font -->
+          <select id="fontName" class="adv-option-button">
+            <option value="default" disabled selected>Font</option> <!-- Default -->
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Courier New">Courier New</option>
+            <option value="cursive">Comic Sans</option>
+            
+          </select>
 
-        <!-- Undo/Redo -->
-        <button id="undo" class="option-button">
-          <i class="fa-solid fa-rotate-left"></i>
-        </button>
-        <button id="redo" class="option-button">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
+          <select id="fontSizeDropdown">
+            <option value="">Font Size</option>
+            <option value="8px">8</option>
+            <option value="10px">10</option>
+            <option value="12px">12</option>
+            <option value="14px">14</option>
+            <option value="16px">16</option>
+            <option value="18px">18</option>
+            <option value="24px">24</option>
+            <option value="30px">30</option>
+            <option value="36px">36</option>
+            <option value="48px">48</option>
+            <option value="72px">72</option>
+            </select>
 
-        <!-- Link -->
-        <button id="createLink" class="adv-option-button">
-          <i class="fa fa-link"></i>
-        </button>
-        <button id="unlink" class="option-button">
-          <i class="fa fa-unlink"></i>
-        </button>
 
-        <!-- Alignment -->
-        <button id="justifyLeft" class="option-button align">
-          <i class="fa-solid fa-align-left"></i>
-        </button>
-        <button id="justifyCenter" class="option-button align">
-          <i class="fa-solid fa-align-center"></i>
-        </button>
-        <button id="justifyRight" class="option-button align">
-          <i class="fa-solid fa-align-right"></i>
-        </button>
-        <button id="justifyFull" class="option-button align">
-          <i class="fa-solid fa-align-justify"></i>
-        </button>
-        <button id="indent" class="option-button spacing">
-          <i class="fa-solid fa-indent"></i>
-        </button>
-        <button id="outdent" class="option-button spacing">
-          <i class="fa-solid fa-outdent"></i>
-        </button>
+          
+          <!-- Color -->
+          <select id="pageColor">
+            <option value="white">White</option>
+            <option value="lightblue">Light Blue</option>
+            <option value="lightgreen">Light Green</option>
+            <option value="salmon">Salmon</option>
+            <option value="lavender">Lavender</option>
+            <option value="beige">Beige</option>
+            <option value="brown">Brown</option>
+            <option value="black">Black</option>
+            </select>
 
-        <!-- Headings -->
-        <select id="formatBlock" class="adv-option-button">
-          <option value="H1">H1</option>
-          <option value="H2">H2</option>
-          <option value="H3">H3</option>
-          <option value="H4">H4</option>
-          <option value="H5">H5</option>
-          <option value="H6">H6</option>
-        </select>
-
-        <!-- Font -->
-        <select id="fontName" class="adv-option-button"></select>
-        <select id="fontSize" class="adv-option-button"></select>
-
-        <!-- Color -->
-        <div class="input-wrapper">
-          <input type="color" id="foreColor" class="adv-option-button" />
-          <label for="foreColor">Font Color</label>
+          <div class="input-wrapper">
+            <input type="color" id="foreColor" class="adv-option-button" />
+            <label for="foreColor">Font Color</label>
+          </div>
+          <div class="input-wrapper">
+            <input type="color" id="backColor" class="adv-option-button" />
+            <label for="backColor">Highlight Color</label>
+          </div>          
         </div>
-        <div class="input-wrapper">
-          <input type="color" id="backColor" class="adv-option-button" />
-          <label for="backColor">Highlight Color</label>
+        <div id="document">
+            <div class="page">
+                <div class="container" contenteditable="true"></div>
+            </div>
         </div>
-      </div>
-      <div id="text-input" contenteditable="true"></div>
-    </div>
-    <!--Script-->
-    <script src="scripts/scripts.js"></script>
-  </body>
+        <footer>
+        </footer>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script src="scripts/test.js"></script>
 </html>
-
