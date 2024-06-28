@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Name</title>
     <link type="text/css" rel="stylesheet" href="/styles/landing.css" />
-</head> 
+</head>
 <body>
     <div class="container">
         <h1>Website Name</h1>
@@ -45,9 +45,8 @@
         function enterJoinSession() {
             const sessionId = document.getElementById('joinSessionId').value;
             const sessionName = document.getElementById('joinSessionName').value;
-            if(sessionId && sessionName) {
+            if (sessionId && sessionName) {
                 window.location.href = `main.html?sessionId=${sessionId}&sessionName=${sessionName}`;
-                // Add your join session logic here
             } else {
                 alert('Please enter both Session ID and Session Name');
             }
@@ -56,9 +55,8 @@
         function enterCreateSession() {
             const sessionId = document.getElementById('generatedSessionId').innerText.split(': ')[1];
             const userName = document.getElementById('userName').value;
-            if(userName) {
+            if (userName) {
                 window.location.href = `main.html?sessionId=${sessionId}&userName=${userName}`;
-                // Add your create session logic here
             } else {
                 alert('Please enter your name');
             }

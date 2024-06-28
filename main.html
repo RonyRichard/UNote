@@ -48,8 +48,8 @@
         let socket;
 
         function setupWebSocket() {
-            // Connect to the WebSocket server (replace 'wss://your-websocket-server' with your server URL)
-            socket = new WebSocket('wss://your-websocket-server');
+            // Connect to the WebSocket server
+            socket = new WebSocket('ws://localhost:8080');  
 
             socket.onopen = function() {
                 console.log('WebSocket connection established');
@@ -117,4 +117,4 @@
         });
     </script>
 </body>
-</html>
+</html>  
