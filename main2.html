@@ -1,97 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>uNote</title>
-        <link rel="stylesheet" href="styles/test.css">
-        <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        />
-    </head>
-    <body>
-        <header class="Icon">
-            <button id="toggle-button">&#9776;</button>
-            <nav>
-                <h2>Session ID: <span id="session-id"></span></h2>
-                <a href="index.html"><h1>uNote</h1></a>
-              </nav>
-        </header>
-        <div id="options-bar">
-            <!-- Text Format -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>uNote</title>
+    <link rel="stylesheet" href="styles/test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e3e6f0);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header nav {
+            display: flex;
+            align-items: center;
+        }
+        header nav h1, header nav h2 {
+            margin: 0;
+        }
+        header nav h2 {
+            font-size: 18px;
+            margin-left: 10px;
+        }
+        #logo {
+            height: 70px;
+            cursor: pointer;
+            margin-right: 20px;
+            margin-left: 10px;
+        }
+        #toggle-button {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            margin-top: 5px;
+        }
+        #editor-block {
+            transition: opacity 0.5s ease;
+            opacity: 1;
+            display: block;
+        }
+        #editor-block.hidden {
+            opacity: 0;
+            display: none;
+        }
+        #options-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease;
+        }
+        #options-bar.hidden {
+            display: none;
+        }
+        #options-bar button, #options-bar select, #options-bar .input-wrapper {
+            margin: 5px;
+        }
+        .option-button, .adv-option-button {
+            background-color: #ffffff;
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        .option-button.format, .option-button.script {
+            background-color: #ffffff;
+            color: #333;
+        }
+        .option-button.format.selected, .option-button.script.selected {
+            background-color: #333;
+            color: white;
+        }
+        .option-button:hover, .adv-option-button:hover {
+            background-color: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        #sticky-notes-container {
+            position: fixed;
+            top: 150px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .sticky-note {
+            width: 200px;
+            height: 200px;
+            padding: 10px;
+            background-color: #ffff88;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            position: absolute;
+            cursor: move;
+            z-index: 1003;
+            overflow: auto;
+        }
+        .sticky-note-content {
+            height: 100%;
+            overflow: auto;
+        }
+        .resize-handle {
+            width: 10px;
+            height: 10px;
+            background: #333;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            cursor: se-resize;
+        }
+        #create-sticky-note, #settings-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 40px;
+            height: 40px;
+        }
+        #create-sticky-note:hover, #settings-button:hover {
+            background-color: #45a049;
+        }
+        .popup-menu {
+            display: none;
+            position: absolute;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            z-index: 1001;
+            padding: 5px;
+            text-align: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .popup-menu.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .popup-menu.hide {
+            opacity: 0;
+            transform: translateX(20px);
+            display: none;
+        }
+        .popup-menu button {
+            background-color: transparent;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+        .popup-menu button:hover {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .popup-menu label {
+            font-size: 14px;
+            color: white;
+        }
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            padding: 10px;
+            justify-content: center;
+        }
+        .color-option {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        footer {
+            padding: 10px;
+            text-align: center;
+            background: #667eea;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        footer button {
+            background-color: white;
+            color: #667eea;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        footer button:hover {
+            background-color: #ffffff;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+        #more-options {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 10px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        #more-options button {
+            display: block;
+            padding: 10px;
+            width: 100%;
+            text-align: left;
+        }
+        #more-options button:hover {
+            background: #f1f1f1;
+        }
+        @media (max-width: 768px) {
+            #options-bar {
+                display: none;
+            }
+            #more-options {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="Icon">
+    <nav>
+        <button id="toggle-button">&#9776;</button>
+        <h2>Session ID: <span id="session-id"></span></h2>
+        <div style="flex-grow: 1;"></div>
+        <a href="landing.html">
+            <img src="img/uNote-Updated-Logo.png" id="logo" alt="uNote Logo">
+        </a>
+    </nav>
+</header>
+<div id="editor-block">
+    <div id="options-bar">
+        <!-- Text Format -->
         <button id="bold" class="option-button format">
             <i class="fa-solid fa-bold"></i>
-          </button>
-          <button id="italic" class="option-button format">
+        </button>
+        <button id="italic" class="option-button format">
             <i class="fa-solid fa-italic"></i>
-          </button>
-          <button id="underline" class="option-button format">
+        </button>
+        <button id="underline" class="option-button format">
             <i class="fa-solid fa-underline"></i>
-          </button>
-          <button id="strikethrough" class="option-button format">
+        </button>
+        <button id="strikethrough" class="option-button format">
             <i class="fa-solid fa-strikethrough"></i>
-          </button>
-          <button id="superscript" class="option-button script">
+        </button>
+        <button id="superscript" class="option-button script">
             <i class="fa-solid fa-superscript"></i>
-          </button>
-          <button id="subscript" class="option-button script">
+        </button>
+        <button id="subscript" class="option-button script">
             <i class="fa-solid fa-subscript"></i>
-          </button>
-  
-          <!-- List -->
-          <button id="insertOrderedList" class="option-button">
-            <div class="fa-solid fa-list-ol"></div>
-          </button>
-          <button id="insertUnorderedList" class="option-button">
-            <i class="fa-solid fa-list"></i>
-          </button>
-  
-          <!-- Undo/Redo -->
-          <button id="undo" class="option-button">
-            <i class="fa-solid fa-rotate-left"></i>
-          </button>
-          <button id="redo" class="option-button">
-            <i class="fa-solid fa-rotate-right"></i>
-          </button>
-  
-          <!-- Link -->
-          <button id="createLink" class="adv-option-button">
-            <i class="fa fa-link"></i>
-          </button>
-          <button id="unlink" class="option-button">
-            <i class="fa fa-unlink"></i>
-          </button>
-  
-          <!-- Alignment -->
-          <button id="justifyLeft" class="option-button align">
-            <i class="fa-solid fa-align-left"></i>
-          </button>
-          <button id="justifyCenter" class="option-button align">
-            <i class="fa-solid fa-align-center"></i>
-          </button>
-          <button id="justifyRight" class="option-button align">
-            <i class="fa-solid fa-align-right"></i>
-          </button>
-          <button id="justifyFull" class="option-button align">
-            <i class="fa-solid fa-align-justify"></i>
-          </button>
-          <button id="indent" class="option-button spacing">
-            <i class="fa-solid fa-indent"></i>
-          </button>
-          <button id="outdent" class="option-button spacing">
-            <i class="fa-solid fa-outdent"></i>
-          </button>
+        </button>
 
-          <!-- Heading/Presets -->
-          <select id="formatBlock" class="adv-option-button">
+        <!-- List -->
+        <button id="insertOrderedList" class="option-button">
+            <div class="fa-solid fa-list-ol"></div>
+        </button>
+        <button id="insertUnorderedList" class="option-button">
+            <i class="fa-solid fa-list"></i>
+        </button>
+
+        <!-- Undo/Redo -->
+        <button id="undo" class="option-button">
+            <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <button id="redo" class="option-button">
+            <i class="fa-solid fa-rotate-right"></i>
+        </button>
+
+        <!-- Link -->
+        <button id="createLink" class="adv-option-button">
+            <i class="fa fa-link"></i>
+        </button>
+        <button id="unlink" class="option-button">
+            <i class="fa fa-unlink"></i>
+        </button>
+
+        <!-- Alignment -->
+        <button id="justifyLeft" class="option-button align">
+            <i class="fa-solid fa-align-left"></i>
+        </button>
+        <button id="justifyCenter" class="option-button align">
+            <i class="fa-solid fa-align-center"></i>
+        </button>
+        <button id="justifyRight" class="option-button align">
+            <i class="fa-solid fa-align-right"></i>
+        </button>
+        <button id="justifyFull" class="option-button align">
+            <i class="fa-solid fa-align-justify"></i>
+        </button>
+        <button id="indent" class="option-button spacing">
+            <i class="fa-solid fa-indent"></i>
+        </button>
+        <button id="outdent" class="option-button spacing">
+            <i class="fa-solid fa-outdent"></i>
+        </button>
+
+        <!-- Heading/Presets -->
+        <select id="formatBlock" class="adv-option-button">
             <option value="H3">Body</option>
             <option value="H4">Title</option>
             <option value="H5">Subtitle</option>            
-          </select>
-  
-          <!-- Font -->
-          <select id="fontName" class="adv-option-button">
+        </select>
+
+        <!-- Font -->
+        <select id="fontName" class="adv-option-button">
             <option value="default" disabled selected>Font</option> <!-- Default -->
             <option value="Arial">Arial</option>
             <option value="Verdana">Verdana</option>
@@ -100,9 +349,9 @@
             <option value="Georgia">Georgia</option>
             <option value="Courier New">Courier New</option>
             <option value="cursive">Cursive</option>
-          </select>
+        </select>
 
-          <select id="fontSizeDropdown">
+        <select id="fontSizeDropdown">
             <option value="">Font Size</option>
             <option value="8px">8</option>
             <option value="10px">10</option>
@@ -110,17 +359,18 @@
             <option value="14px">14</option>
             <option value="16px">16</option>
             <option value="18px">18</option>
+            <option value="20px">20</option>
             <option value="24px">24</option>
-            <option value="30px">30</option>
+            <option value="28px">28</option>
+            <option value="32px">32</option>
             <option value="36px">36</option>
             <option value="48px">48</option>
+            <option value="64px">64</option>
             <option value="72px">72</option>
-            </select>
+        </select>
 
-
-          
-          <!-- Color -->
-          <select id="pageColor">
+        <!-- Color -->
+        <select id="pageColor">
             <option value="white">White</option>
             <option value="lightblue">Light Blue</option>
             <option value="lightgreen">Light Green</option>
@@ -129,26 +379,297 @@
             <option value="beige">Beige</option>
             <option value="brown">Brown</option>
             <option value="black">Black</option>
-            </select>
+        </select>
 
-          <div class="input-wrapper">
+        <div class="input-wrapper">
             <input type="color" id="foreColor" class="adv-option-button" />
             <label for="foreColor">Font Color</label>
-          </div>
-          <div class="input-wrapper">
+        </div>
+        <div class="input-wrapper">
             <input type="color" id="backColor" class="adv-option-button" />
             <label for="backColor">Highlight Color</label>
-          </div>          
+        </div>          
+    </div>
+</div>
+<div id="more-options">
+    <button id="more-options-button" class="fa fa-ellipsis-v"></button>
+    <div class="popup-menu" id="more-options-menu">
+        <!-- Will be populated by JavaScript with hidden options -->
+    </div>
+</div>
+<div id="document">
+    <div class="page">
+        <div class="container" contenteditable="true"></div>
+    </div>
+</div>
+<div id="sticky-notes-container">
+    <button id="create-sticky-note">+</button>
+    <div class="popup-menu" id="create-menu" style="right: 50px;">
+        <button id="create-sticky-note-option">Create Sticky Note</button>
+    </div>
+    <button id="settings-button" class="fa fa-bars"></button>
+    <div class="popup-menu" id="settings-menu" style="right: 50px;">
+        <label id="change-color-label">Change Color</label>
+        <div class="color-options">
+            <div class="color-option" style="background-color: #FF6347;"></div>
+            <div class="color-option" style="background-color: #FFD700;"></div>
+            <div class="color-option" style="background-color: #ADFF2F;"></div>
+            <div class="color-option" style="background-color: #40E0D0;"></div>
+            <div class="color-option" style="background-color: #1E90FF;"></div>
+            <div class="color-option" style="background-color: #9370DB;"></div>
+            <div class=" color-option" style="background-color: #FF69B4;"></div>
+            <div class="color-option" style="background-color: #FF4500;"></div>
+            <div class="color-option" style="background-color: #32CD32;"></div>
+            <div class="color-option" style="background-color: #8A2BE2;"></div>
+            <div class="color-option" style="background-color: #DAA520;"></div>
+            <div class="color-option" style="background-color: #DC143C;"></div>
         </div>
-        <div id="document">
-            <div class="page">
-                <div class="container" contenteditable="true"></div>
-            </div>
-        </div>
-        <footer>
-            <button id="saveBtn">Save Content</button>
-        </footer>
-    </body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-    <script src="scripts/test.js"></script>
+        <button id="remove-sticky-note">Delete Sticky Note</button>
+    </div>
+</div>
+<footer>
+    <button id="saveBtn">Save Content / Export as PDF</button>
+</footer>
+<script>
+    // Logo navigation
+    document.getElementById('logo').addEventListener('click', function() {
+        window.location.href = 'landing.html';
+    });
+
+    // Option button selection and formatting
+    document.querySelectorAll('.option-button.format, .option-button.script').forEach(button => {
+        button.addEventListener('click', function() {
+            const command = this.id;
+            document.execCommand(command, false, null);
+            this.classList.toggle('selected');
+        });
+    });
+
+    document.querySelectorAll('.option-button:not(.format):not(.script)').forEach(button => {
+        button.addEventListener('click', function() {
+            const command = this.id;
+            document.execCommand(command, false, null);
+            this.classList.add('clicked');
+            setTimeout(() => this.classList.remove('clicked'), 200);
+        });
+    });
+
+    // Create sticky note menu
+    document.getElementById('create-sticky-note').addEventListener('click', function() {
+        const createMenu = document.getElementById('create-menu');
+        if (createMenu.classList.contains('show')) {
+            createMenu.classList.remove('show');
+            createMenu.classList.add('hide');
+            setTimeout(() => {
+                createMenu.style.display = 'none';
+            }, 500);
+        } else {
+            createMenu.classList.remove('hide');
+            createMenu.classList.add('show');
+            createMenu.style.display = 'block';
+        }
+    });
+
+    document.getElementById('create-sticky-note-option').addEventListener('click', function() {
+        const stickyNote = document.createElement('div');
+        stickyNote.classList.add('sticky-note');
+        stickyNote.innerHTML = `
+            <div class="sticky-note-content" contenteditable="true"></div>
+            <div class="resize-handle"></div>
+        `;
+        stickyNote.style.top = '150px';
+        stickyNote.style.left = '50%';
+        stickyNote.style.transform = 'translateX(-50%)';
+        document.body.appendChild(stickyNote);
+        const createMenu = document.getElementById('create-menu');
+        createMenu.classList.remove('show');
+        createMenu.classList.add('hide');
+        setTimeout(() => {
+            createMenu.style.display = 'none';
+        }, 500);
+
+        // Make the sticky note draggable
+        let isDragging = false;
+        let initialX, initialY;
+        let isResizing = false;
+        let initialWidth, initialHeight, initialMouseX, initialMouseY;
+
+        stickyNote.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('resize-handle')) {
+                isResizing = true;
+                initialWidth = stickyNote.offsetWidth;
+                initialHeight = stickyNote.offsetHeight;
+                initialMouseX = e.clientX;
+                initialMouseY = e.clientY;
+                e.preventDefault();
+            } else {
+                isDragging = true;
+                initialX = e.clientX - stickyNote.getBoundingClientRect().left;
+                initialY = e.clientY - stickyNote.getBoundingClientRect().top;
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                const newX = e.clientX - initialX;
+                const newY = e.clientY - initialY;
+                stickyNote.style.left = `${newX}px`;
+                stickyNote.style.top = `${newY}px`;
+            } else if (isResizing) {
+                const newWidth = initialWidth + (e.clientX - initialMouseX);
+                const newHeight = initialHeight + (e.clientY - initialMouseY);
+                stickyNote.style.width = `${newWidth}px`;
+                stickyNote.style.height = `${newHeight}px`;
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            isResizing = false;
+        });
+
+        stickyNote.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('settings-button').style.display = 'block';
+            document.querySelectorAll('.sticky-note').forEach(note => {
+                note.classList.remove('sticky-note-selected');
+            });
+            stickyNote.classList.add('sticky-note-selected');
+        });
+    });
+
+    // Settings menu
+    document.getElementById('settings-button').addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent de-selection of sticky note
+        const settingsMenu = document.getElementById('settings-menu');
+        if (settingsMenu.classList.contains('show')) {
+            settingsMenu.classList.remove('show');
+            settingsMenu.classList.add('hide');
+            setTimeout(() => {
+                settingsMenu.style.display = 'none';
+            }, 500);
+        } else {
+            settingsMenu.classList.remove('hide');
+            settingsMenu.classList.add('show');
+            settingsMenu.style.display = 'block';
+        }
+    });
+
+    document.querySelectorAll('.color-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const selectedNote = document.querySelector('.sticky-note-selected');
+            if (selectedNote) {
+                selectedNote.style.backgroundColor = this.style.backgroundColor;
+            }
+        });
+    });
+
+    document.getElementById('remove-sticky-note').addEventListener('click', function() {
+        const selectedNote = document.querySelector('.sticky-note-selected');
+        if (selectedNote) {
+            selectedNote.remove();
+            const settingsMenu = document.getElementById('settings-menu');
+            settingsMenu.classList.remove('show');
+            settingsMenu.classList.add('hide');
+            setTimeout(() => {
+                settingsMenu.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        const stickyNotes = document.querySelectorAll('.sticky-note');
+        stickyNotes.forEach(note => {
+            note.classList.remove('sticky-note-selected');
+        });
+        if (e.target.classList.contains('sticky-note')) {
+            e.target.classList.add('sticky-note-selected');
+            document.getElementById('settings-button').style.display = 'block';
+        } else {
+            document.getElementById('settings-button').style.display = 'none';
+        }
+    });
+
+    document.getElementById('sticky-notes-container').addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent de-selection of sticky note
+    });
+
+    // Close menus on clicking away
+    document.addEventListener('click', function() {
+        const createMenu = document.getElementById('create-menu');
+        if (createMenu.classList.contains('show')) {
+            createMenu.classList.remove('show');
+            createMenu.classList.add('hide');
+            setTimeout(() => {
+                createMenu.style.display = 'none';
+            }, 500);
+        }
+        const settingsMenu = document.getElementById('settings-menu');
+        if (settingsMenu.classList.contains('show')) {
+            settingsMenu.classList.remove('show');
+            settingsMenu.classList.add('hide');
+            setTimeout(() => {
+                settingsMenu.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // Export as PDF functionality
+    document.getElementById('saveBtn').addEventListener('click', function() {
+        const pdf = new jsPDF();
+        const elements = document.querySelectorAll('.sticky-note');
+        elements.forEach(element => {
+            const boundingRect = element.getBoundingClientRect();
+            const noteContent = element.querySelector('.sticky-note-content');
+            const noteText = noteContent ? noteContent.innerText : '';
+            pdf.rect(boundingRect.left, boundingRect.top, boundingRect.width, boundingRect.height);
+            pdf.text(noteText, boundingRect.left + 5, boundingRect.top + 10); // Adjust text position
+        });
+        pdf.save('document.pdf');
+    });
+
+    // More options menu for responsive design
+    const moreOptionsButton = document.getElementById('more-options-button');
+    const moreOptionsMenu = document.getElementById('more-options-menu');
+
+    moreOptionsButton.addEventListener('click', function() {
+        moreOptionsMenu.style.display = moreOptionsMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+            const optionsBar = document.getElementById('options-bar');
+            moreOptionsMenu.innerHTML = optionsBar.innerHTML;
+            optionsBar.style.display = 'none';
+            moreOptionsButton.style.display = 'block';
+        } else {
+            document.getElementById('options-bar').style.display = 'flex';
+            moreOptionsButton.style.display = 'none';
+            moreOptionsMenu.style.display = 'none';
+        }
+    });
+
+    // Initial check
+    if (window.innerWidth <= 768) {
+        const optionsBar = document.getElementById('options-bar');
+        moreOptionsMenu.innerHTML = optionsBar.innerHTML;
+        optionsBar.style.display = 'none';
+        moreOptionsButton.style.display = 'block';
+    }
+
+    // Toggle options bar visibility
+    document.getElementById('toggle-button').addEventListener('click', function() {
+        const editorBlock = document.getElementById('editor-block');
+        if (editorBlock.classList.contains('hidden')) {
+            editorBlock.classList.remove('hidden');
+            editorBlock.style.display = 'block';
+        } else {
+            editorBlock.classList.add('hidden');
+            setTimeout(() => {
+                editorBlock.style.display = 'none';
+            }, 500);
+        }
+    });
+</script>
+</body>
 </html>
