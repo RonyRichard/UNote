@@ -1,24 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>uNote</title>
-        <link rel="stylesheet" href="styles/main.css">
-    </head>
-    <body>
-        <header class="Icon">
-            <nav>
-                <a href="index.html"><img src="img\U-Note-Logo.png" alt="uNote Logo"></a>
-              </nav>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>uNote</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e3e6f0);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .main-section {
+            position: relative;
+            text-align: center;
+            padding: 100px 50px; /* Adjust padding to ensure content is well spaced */
+        }
+        #logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 400px;
+            width: auto;
+            opacity: 0.1; /* Make the logo slightly transparent */
+            z-index: 0; /* Ensure the logo is behind the buttons */
+        }
+        .main-content {
+            position: relative;
+            z-index: 1; /* Ensure the content is above the logo */
+        }
+        .main-content a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            font-size: 18px;
+            color: white;
+            background-color: #667eea;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .main-content a:hover {
+            background-color: #764ba2;
+        }
+        footer {
+            padding: 10px;
+            text-align: center;
+            background: #667eea;
+            color: white;
+            position: center;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Thin header at the top of the page -->
+    </header>
+    <div class="main-section">
+        <img src="img/uNote-Updated-Logo.png" id="logo" alt="uNote Logo">
         <div class="main-content">
-            <a href="main2.html">Join Session</button>
+            <a href="main2.html">Join Session</a>
             <a href="main.html">Create Session</a>
         </div>
-        <footer>
-            <a href="aboutus.html">About Us</a>
-        </footer>
-        <script src="editor.js"></script>
-    </body>
+    </div>
+    <footer>
+        <a href="aboutus.html">About Us</a>
+    </footer>
+    <script src="editor.js"></script>
+</body>
 </html>

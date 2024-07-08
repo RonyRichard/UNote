@@ -261,7 +261,7 @@
         <button id="toggle-button">&#9776;</button>
         <h2>Session ID: <span id="session-id"></span></h2>
         <div style="flex-grow: 1;"></div>
-        <a href="landing.html">
+        <a href="index.html">
             <img src="img/uNote-Updated-Logo.png" id="logo" alt="uNote Logo">
         </a>
     </nav>
@@ -394,7 +394,7 @@
 <div id="more-options">
     <button id="more-options-button" class="fa fa-ellipsis-v"></button>
     <div class="popup-menu" id="more-options-menu">
-        <!-- Will be populated by JavaScript with hidden options -->
+        <!-- //Will be populated by JavaScript with hidden options -->
     </div>
 </div>
 <div id="document">
@@ -431,12 +431,12 @@
     <button id="saveBtn">Save Content / Export as PDF</button>
 </footer>
 <script>
-    // Logo navigation
+    //Logo navigation
     document.getElementById('logo').addEventListener('click', function() {
-        window.location.href = 'landing.html';
+        window.location.href = 'index.html';
     });
 
-    // Option button selection and formatting
+    //Option button selection and formatting
     document.querySelectorAll('.option-button.format, .option-button.script').forEach(button => {
         button.addEventListener('click', function() {
             const command = this.id;
@@ -454,7 +454,7 @@
         });
     });
 
-    // Create sticky note menu
+    //Create sticky note menu
     document.getElementById('create-sticky-note').addEventListener('click', function() {
         const createMenu = document.getElementById('create-menu');
         if (createMenu.classList.contains('show')) {
@@ -488,7 +488,7 @@
             createMenu.style.display = 'none';
         }, 500);
 
-        // Make the sticky note draggable
+        //Make the sticky note draggable
         let isDragging = false;
         let initialX, initialY;
         let isResizing = false;
@@ -538,7 +538,7 @@
         });
     });
 
-    // Settings menu
+    //Settings menu
     document.getElementById('settings-button').addEventListener('click', function(event) {
         event.stopPropagation(); // Prevent de-selection of sticky note
         const settingsMenu = document.getElementById('settings-menu');
@@ -594,7 +594,7 @@
         event.stopPropagation(); // Prevent de-selection of sticky note
     });
 
-    // Close menus on clicking away
+    //Close menus on clicking away
     document.addEventListener('click', function() {
         const createMenu = document.getElementById('create-menu');
         if (createMenu.classList.contains('show')) {
@@ -614,7 +614,7 @@
         }
     });
 
-    // Export as PDF functionality
+    //Export as PDF functionality
     document.getElementById('saveBtn').addEventListener('click', function() {
         const pdf = new jsPDF();
         const elements = document.querySelectorAll('.sticky-note');
@@ -628,7 +628,7 @@
         pdf.save('document.pdf');
     });
 
-    // More options menu for responsive design
+    //More options menu for responsive design
     const moreOptionsButton = document.getElementById('more-options-button');
     const moreOptionsMenu = document.getElementById('more-options-menu');
 
@@ -649,7 +649,7 @@
         }
     });
 
-    // Initial check
+    //Initial check
     if (window.innerWidth <= 768) {
         const optionsBar = document.getElementById('options-bar');
         moreOptionsMenu.innerHTML = optionsBar.innerHTML;
@@ -657,7 +657,7 @@
         moreOptionsButton.style.display = 'block';
     }
 
-    // Toggle options bar visibility
+    //Toggle options bar visibility
     document.getElementById('toggle-button').addEventListener('click', function() {
         const editorBlock = document.getElementById('editor-block');
         if (editorBlock.classList.contains('hidden')) {
