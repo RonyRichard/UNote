@@ -11,15 +11,20 @@
         <header class="Icon">
             <nav>
                 <a href="index.html"><h1>uNote</h1></a>
-              </nav>
+            </nav>
         </header>
         <div class="main-content">
-            <a href="main.html">Join Session</button>
-            <a href="">Create Session</a>
+            <button onclick="createSession()">Create Session</button>
+            <a href="join-session.html">Join Session</a>
         </div>
         <footer>
             <a href="aboutus.html">About Us</a>
         </footer>
-        <script src="editor.js"></script>
+        <script>
+            function createSession() {
+                const randomId = Math.random().toString(36).substring(2, 15);
+                window.location.href = 'main.html?session=' + randomId;
+            }
+        </script>
     </body>
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join uNote Session</title>
+</head>
+<body>
+    <h1>Join a uNote Session</h1>
+    <form id="joinSessionForm" action="main.html" method="GET">
+        <input type="text" id="sessionIdInput" name="session" placeholder="Enter Session ID" required>
+        <button type="submit">Join Session</button>
+    </form>
+
+    <script>
+        var form = document.getElementById('joinSessionForm');
+        form.onsubmit = function(event) {
+            // Optionally, you can add any additional logic here before submitting
+        };
+    </script>
+</body>
+<style>
+    .join-session-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    input, button {
+        margin: 10px;
+        padding: 8px;
+        font-size: 16px;
+    }
+</style>    
+
+</html>
