@@ -1,13 +1,11 @@
 # Overview
 
-UNOTE! 
+UNOTE is a Web App design to be a collaborative platform for classrooms to take notes and notes 
+more flexible to share with classmates. This application works just as live session documents 
+where eveyone can edit and add content into a document for class taking notes! 
 
-
-
-Hi! In the spirit of coding for fun more than learning. I tried creating something personal that we can be interested 
-and passionate about. Nothing to serious and yet powerful enough to teach new skills. Remember for once how in the 80s 
-and 90s, originated programmers. This project is for my own amusement touching for the first time graphics and the 
-creation of images using C++. Not only that but animating a 2D image and make it look 3D.
+The final goal is give tools for students to facilitate sharing knowledge and notes from classes 
+to study and be successful at school together.
 
 ![image](https://github.com/user-attachments/assets/61bab6ba-687c-4f31-97d1-7b8b32dc44f4)
 
